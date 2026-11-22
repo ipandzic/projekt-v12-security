@@ -41,8 +41,10 @@ def preuzmi(datoteka: str, korisnik: Prijavljeni, ctx: Ctx) -> Response:
     lista = ctx.baza.jedan(SELECT + " WHERE datoteka = ?", (datoteka,))
     if lista is None or not (korisnik.is_admin or lista["zaposlenik"] == korisnik.username):
         raise ApiGreska.nije_pronadeno("Datoteka nije pronađena.")
-    putanja = ctx.pohrana.dokumenti / datoteka
-    if not putanja.is_file():
+    korijen = ctx.pohrana.dokumenti.resolve()
+    # Ime datoteke iz baze (ne iz parametra) + provjera da ostaje unutar mape dokumenata.
+    putanja = (korijen / lista["datoteka"]).resolve()
+    if not putanja.is_relative_to(korijen) or not putanja.is_file():
         raise ApiGreska.nije_pronadeno("Datoteka nije pronađena.")
     return Response(
         content=putanja.read_bytes(),

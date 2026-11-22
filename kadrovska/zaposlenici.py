@@ -12,12 +12,17 @@ from kadrovska.platforma.kontekst import Ctx
 
 router = APIRouter(prefix="/api/zaposlenici")
 
-POLJA_ZA_SORTIRANJE = {"ime", "prezime", "odjel", "email"}
-SMJEROVI = {"asc", "desc"}
+# Konstantni SQL fragmenti – parametri zahtjeva nikad ne ulaze u ORDER BY izravno.
+STUPCI = {"ime": "ime", "prezime": "prezime", "odjel": "odjel", "email": "email"}
+SMJEROVI = {"asc": "ASC", "desc": "DESC"}
+
 
 @router.get("")
 def popis(korisnik: Prijavljeni, ctx: Ctx, sort: str = "prezime", smjer: str = "asc") -> list[dict[str, Any]]:
-    if sort not in POLJA_ZA_SORTIRANJE or smjer not in SMJEROVI:
+    stupac = STUPCI.get(sort)
+    redoslijed = SMJEROVI.get(smjer)
+    if stupac is None or redoslijed is None:
         raise ApiGreska.neispravno("Neispravno sortiranje.")
-    sql = f"SELECT id, ime, prezime, odjel, email FROM zaposlenici ORDER BY {sort} {smjer}"  # noqa: S608
+    # stupac/redoslijed dolaze isključivo iz STUPCI/SMJEROVI (konstante), ne iz zahtjeva.
+    sql = f"SELECT id, ime, prezime, odjel, email FROM zaposlenici ORDER BY {stupac} {redoslijed}"  # noqa: S608
     return ctx.baza.upit(sql)
