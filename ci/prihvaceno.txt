@@ -1,0 +1,17 @@
+# Prihvaćeni nalazi (iznimke za sigurnosna vrata) – čita ih ci/gate.py.
+#
+# Format (5 polja odvojenih s |, obrazloženje je OBAVEZNO):
+#   alat | pravilo | datoteka | odsječak koda | obrazloženje
+#
+#   alat      semgrep, bandit, osv, pip-audit, gitleaks, zap (ili *)
+#   pravilo   ID pravila; uzorak kao u ljusci (*). Za Semgrep dovoljan je zadnji dio ID-a, za Bandit npr. B608.
+#   datoteka  uzorak putanje (bez / = samo ime datoteke); za osv/pip-audit "paket@verzija", za zap putanja URL-a
+#   odsječak  (neobavezno) tekst koji mora biti u redcima nalaza – iznimka tada vrijedi samo za TAJ kod,
+#             pa se ponovno uveden propust na drugom mjestu (ili drukčijim kodom) i dalje blokira.
+#             Ne smije sadržavati znak |.
+#
+# Pravilo: što uže iznimke (pravilo + datoteka + odsječak), uvijek s razlogom; preispitajte ih pri svakoj promjeni.
+# Primjer (Bandit u izvornom kodu umjesto toga: "# nosec B608 – razlog" na istom retku):
+# bandit | B608 | lijecnici.py | ORDER BY {stupac} {redoslijed} | stupac i smjer dolaze iz rječnika dopuštenih vrijednosti
+#
+# Zajednička platforma T2 projekata (Python): trenutačno bez iznimaka.

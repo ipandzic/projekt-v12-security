@@ -1,0 +1,8 @@
+# Što Semgrep NE analizira (zamjenjuje Semgrepov zadani popis).
+tests/
+.venv/
+venv/
+izvjestaji/
+.ci-alati/
+http/
+htmlcov/

@@ -1,0 +1,310 @@
+{
+  "info": {
+    "name": "Kadrovska (Python)",
+    "description": "Generated from python/http/kadrovska.http. Set the 'token' variable to the value returned by POST /api/auth/login (in Postman, the login requests set it automatically). For OWASP ZAP: Import > Import a Postman Collection, and pass e.g. host=http://localhost:8000,token=<JWT> in the variables field if needed.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "host", "value": "http://localhost:8000" },
+    { "key": "token", "value": "ZALIJEPI_TOKEN" }
+  ],
+  "item": [
+    {
+      "name": "Provjera rada",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": { "raw": "{{host}}/api/health", "host": ["{{host}}"], "path": ["api", "health"] }
+      }
+    },
+    {
+      "name": "Prijava (ana)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "const t = pm.response.json().token;",
+              "if (t) { pm.collectionVariables.set('token', t); }"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"username\": \"ana\", \"password\": \"Ana12345!\"}",
+          "options": { "raw": { "language": "json" } }
+        },
+        "url": { "raw": "{{host}}/api/auth/login", "host": ["{{host}}"], "path": ["api", "auth", "login"] }
+      }
+    },
+    {
+      "name": "Prijava voditelja",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "const t = pm.response.json().token;",
+              "if (t) { pm.collectionVariables.set('token', t); }"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"username\": \"voditelj\", \"password\": \"Ovlasteni12345!\"}",
+          "options": { "raw": { "language": "json" } }
+        },
+        "url": { "raw": "{{host}}/api/auth/login", "host": ["{{host}}"], "path": ["api", "auth", "login"] }
+      }
+    },
+    {
+      "name": "Podaci prijavljenog korisnika",
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+        "url": { "raw": "{{host}}/api/ja", "host": ["{{host}}"], "path": ["api", "ja"] }
+      }
+    },
+    {
+      "name": "Registracija novog korisnika",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"username\": \"petra\", \"password\": \"Petra12345!\", \"email\": \"petra@primjer.hr\", \"ime\": \"Petra\", \"prezime\": \"Perić\"}",
+          "options": { "raw": { "language": "json" } }
+        },
+        "url": { "raw": "{{host}}/api/auth/register", "host": ["{{host}}"], "path": ["api", "auth", "register"] }
+      }
+    },
+    {
+      "name": "Imenik zaposlenika sortiran po prezimenu",
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+        "url": {
+          "raw": "{{host}}/api/zaposlenici?sort=prezime&smjer=asc",
+          "host": ["{{host}}"],
+          "path": ["api", "zaposlenici"],
+          "query": [
+            { "key": "sort", "value": "prezime" },
+            { "key": "smjer", "value": "asc" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Imenik zaposlenika sortiran po odjelu",
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+        "url": {
+          "raw": "{{host}}/api/zaposlenici?sort=odjel&smjer=asc",
+          "host": ["{{host}}"],
+          "path": ["api", "zaposlenici"],
+          "query": [
+            { "key": "sort", "value": "odjel" },
+            { "key": "smjer", "value": "asc" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Novi zahtjev za godišnji odmor",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"od\": \"2027-07-01\", \"do\": \"2027-07-14\", \"razlog\": \"Ljetni odmor\", \"oib\": \"48291736504\"}",
+          "options": { "raw": { "language": "json" } }
+        },
+        "url": { "raw": "{{host}}/api/zahtjevi", "host": ["{{host}}"], "path": ["api", "zahtjevi"] }
+      }
+    },
+    {
+      "name": "Moji zahtjevi",
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+        "url": { "raw": "{{host}}/api/zahtjevi/moji", "host": ["{{host}}"], "path": ["api", "zahtjevi", "moji"] }
+      }
+    },
+    {
+      "name": "Potvrda zahtjeva za ispis (HTML)",
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+        "url": { "raw": "{{host}}/ispis/zahtjevi/1", "host": ["{{host}}"], "path": ["ispis", "zahtjevi", "1"] }
+      }
+    },
+    {
+      "name": "Povlačenje zahtjeva",
+      "request": {
+        "method": "DELETE",
+        "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+        "url": { "raw": "{{host}}/api/zahtjevi/1", "host": ["{{host}}"], "path": ["api", "zahtjevi", "1"] }
+      }
+    },
+    {
+      "name": "Moje platne liste",
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+        "url": { "raw": "{{host}}/api/platne-liste/moje", "host": ["{{host}}"], "path": ["api", "platne-liste", "moje"] }
+      }
+    },
+    {
+      "name": "Platna lista u JSON obliku",
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+        "url": {
+          "raw": "{{host}}/api/platne-liste/1?format=json",
+          "host": ["{{host}}"],
+          "path": ["api", "platne-liste", "1"],
+          "query": [{ "key": "format", "value": "json" }]
+        }
+      }
+    },
+    {
+      "name": "Platna lista kao PDF",
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+        "url": {
+          "raw": "{{host}}/api/platne-liste/1?format=pdf",
+          "host": ["{{host}}"],
+          "path": ["api", "platne-liste", "1"],
+          "query": [{ "key": "format", "value": "pdf" }]
+        }
+      }
+    },
+    {
+      "name": "Preuzimanje datoteke platne liste",
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+        "url": {
+          "raw": "{{host}}/api/platne-liste/preuzmi?datoteka=placa-ana-2026-10.txt",
+          "host": ["{{host}}"],
+          "path": ["api", "platne-liste", "preuzmi"],
+          "query": [{ "key": "datoteka", "value": "placa-ana-2026-10.txt" }]
+        }
+      }
+    },
+    {
+      "name": "Edukacije",
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+        "url": { "raw": "{{host}}/api/edukacije", "host": ["{{host}}"], "path": ["api", "edukacije"] }
+      }
+    },
+    {
+      "name": "Prijava na edukaciju",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+        "url": { "raw": "{{host}}/api/edukacije/1/prijava", "host": ["{{host}}"], "path": ["api", "edukacije", "1", "prijava"] }
+      }
+    },
+    {
+      "name": "Uvoz edukacija iz XML-a (voditelj ili admin)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}" },
+          { "key": "Content-Type", "value": "application/xml" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "<edukacije>\n  <edukacija>\n    <naziv>Excel za početnike</naziv>\n    <datum>2026-12-03</datum>\n    <kapacitet>15</kapacitet>\n  </edukacija>\n</edukacije>",
+          "options": { "raw": { "language": "xml" } }
+        },
+        "url": { "raw": "{{host}}/api/edukacije/uvoz", "host": ["{{host}}"], "path": ["api", "edukacije", "uvoz"] }
+      }
+    },
+    {
+      "name": "Postavke obavijesti (YAML)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}" },
+          { "key": "Content-Type", "value": "application/yaml" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "podsjetnik: true\nsatiPrije: 24\nkanal: email\n",
+          "options": { "raw": { "language": "text" } }
+        },
+        "url": { "raw": "{{host}}/api/postavke", "host": ["{{host}}"], "path": ["api", "postavke"] }
+      }
+    },
+    {
+      "name": "Trenutne postavke obavijesti",
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+        "url": { "raw": "{{host}}/api/postavke", "host": ["{{host}}"], "path": ["api", "postavke"] }
+      }
+    },
+    {
+      "name": "Zahtjev za promjenu lozinke",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"username\": \"ana\"}",
+          "options": { "raw": { "language": "json" } }
+        },
+        "url": { "raw": "{{host}}/api/auth/reset-zahtjev", "host": ["{{host}}"], "path": ["api", "auth", "reset-zahtjev"] }
+      }
+    },
+    {
+      "name": "Promjena lozinke tokenom iz poruke",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"token\": \"TOKEN_IZ_PORUKE\", \"novaLozinka\": \"NovaLozinka123!\"}",
+          "options": { "raw": { "language": "json" } }
+        },
+        "url": { "raw": "{{host}}/api/auth/reset", "host": ["{{host}}"], "path": ["api", "auth", "reset"] }
+      }
+    },
+    {
+      "name": "Prijava obrascem (kolačić SESSION)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/x-www-form-urlencoded" }],
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            { "key": "username", "value": "ana" },
+            { "key": "password", "value": "Ana12345!" },
+            { "key": "returnUrl", "value": "/" }
+          ]
+        },
+        "url": { "raw": "{{host}}/prijava", "host": ["{{host}}"], "path": ["prijava"] }
+      }
+    }
+  ]
+}
+

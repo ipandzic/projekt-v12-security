@@ -1,0 +1,9 @@
+# Putanje koje ZAP posjećuje s tokenom testnog korisnika (API nema poveznica koje bi spider pratio).
+# Jedna putanja po retku; samo GET, bez brisanja podataka.
+/api/health
+/api/ja
+/prijava?returnUrl=/
+/api/zaposlenici
+/api/zahtjevi/moji
+/api/platne-liste/moje
+/ispis/zahtjevi/1

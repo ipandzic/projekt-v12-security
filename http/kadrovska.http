@@ -1,0 +1,124 @@
+### Kadrovska – primjeri zahtjeva (IntelliJ HTTP Client / VS Code REST Client)
+@host = http://localhost:8000
+# Token iz odgovora na prijavu kopiraj u @token.
+@token = ZALIJEPI_TOKEN
+
+### Provjera rada
+GET {{host}}/api/health
+
+### Prijava (ana)
+POST {{host}}/api/auth/login
+Content-Type: application/json
+
+{"username": "ana", "password": "Ana12345!"}
+
+### Prijava voditelja
+POST {{host}}/api/auth/login
+Content-Type: application/json
+
+{"username": "voditelj", "password": "Ovlasteni12345!"}
+
+### Podaci prijavljenog korisnika
+GET {{host}}/api/ja
+Authorization: Bearer {{token}}
+
+### Registracija novog korisnika
+POST {{host}}/api/auth/register
+Content-Type: application/json
+
+{"username": "petra", "password": "Petra12345!", "email": "petra@primjer.hr", "ime": "Petra", "prezime": "Perić"}
+
+### Imenik zaposlenika sortiran po prezimenu
+GET {{host}}/api/zaposlenici?sort=prezime&smjer=asc
+Authorization: Bearer {{token}}
+
+### Imenik zaposlenika sortiran po odjelu
+GET {{host}}/api/zaposlenici?sort=odjel&smjer=asc
+Authorization: Bearer {{token}}
+
+### Novi zahtjev za godišnji odmor
+POST {{host}}/api/zahtjevi
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{"od": "2027-07-01", "do": "2027-07-14", "razlog": "Ljetni odmor", "oib": "48291736504"}
+
+### Moji zahtjevi
+GET {{host}}/api/zahtjevi/moji
+Authorization: Bearer {{token}}
+
+### Potvrda zahtjeva za ispis (HTML)
+GET {{host}}/ispis/zahtjevi/1
+Authorization: Bearer {{token}}
+
+### Povlačenje zahtjeva
+DELETE {{host}}/api/zahtjevi/1
+Authorization: Bearer {{token}}
+
+### Moje platne liste
+GET {{host}}/api/platne-liste/moje
+Authorization: Bearer {{token}}
+
+### Platna lista u JSON obliku
+GET {{host}}/api/platne-liste/1?format=json
+Authorization: Bearer {{token}}
+
+### Platna lista kao PDF
+GET {{host}}/api/platne-liste/1?format=pdf
+Authorization: Bearer {{token}}
+
+### Preuzimanje datoteke platne liste
+GET {{host}}/api/platne-liste/preuzmi?datoteka=placa-ana-2026-10.txt
+Authorization: Bearer {{token}}
+
+### Edukacije
+GET {{host}}/api/edukacije
+Authorization: Bearer {{token}}
+
+### Prijava na edukaciju
+POST {{host}}/api/edukacije/1/prijava
+Authorization: Bearer {{token}}
+
+### Uvoz edukacija iz XML-a (voditelj ili admin)
+POST {{host}}/api/edukacije/uvoz
+Authorization: Bearer {{token}}
+Content-Type: application/xml
+
+<edukacije>
+  <edukacija>
+    <naziv>Excel za početnike</naziv>
+    <datum>2026-12-03</datum>
+    <kapacitet>15</kapacitet>
+  </edukacija>
+</edukacije>
+
+### Postavke obavijesti (YAML)
+POST {{host}}/api/postavke
+Authorization: Bearer {{token}}
+Content-Type: application/yaml
+
+podsjetnik: true
+satiPrije: 24
+kanal: email
+
+### Trenutne postavke obavijesti
+GET {{host}}/api/postavke
+Authorization: Bearer {{token}}
+
+### Zahtjev za promjenu lozinke (poruka se zapisuje u data/posta)
+POST {{host}}/api/auth/reset-zahtjev
+Content-Type: application/json
+
+{"username": "ana"}
+
+### Promjena lozinke tokenom iz poruke
+POST {{host}}/api/auth/reset
+Content-Type: application/json
+
+{"token": "TOKEN_IZ_PORUKE", "novaLozinka": "NovaLozinka123!"}
+
+### Prijava obrascem (postavlja kolačić SESSION i preusmjerava)
+POST {{host}}/prijava
+Content-Type: application/x-www-form-urlencoded
+
+username=ana&password=Ana12345!&returnUrl=/

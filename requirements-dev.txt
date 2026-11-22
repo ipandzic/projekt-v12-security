@@ -1,0 +1,13 @@
+# Ovisnosti za razvoj i testove (uključuje ovisnosti aplikacije)
+-r requirements.txt
+pytest==9.2.0
+pytest-cov==7.1.0
+# klijent za Starlette TestClient
+httpx2==2.16.0
+# alati za statičku analizu koda i provjeru ovisnosti
+bandit==1.9.4
+ruff==0.17.3
+pip-audit==2.10.1
+cyclonedx-bom==7.6.0
+certifi==2026.10.23
+pip==26.3

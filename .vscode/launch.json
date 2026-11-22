@@ -1,0 +1,21 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Kadrovska (uvicorn, port 8000)",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "kadrovska",
+      "cwd": "${workspaceFolder}",
+      "justMyCode": true
+    },
+    {
+      "name": "Pytest (svi testovi)",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "pytest",
+      "cwd": "${workspaceFolder}",
+      "justMyCode": false
+    }
+  ]
+}

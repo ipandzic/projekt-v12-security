@@ -1,0 +1,37 @@
+[project]
+name = "kadrovska"
+version = "1.0.0"
+description = "Kadrovska – interni HR portal: imenik zaposlenika, godišnji odmori, platne liste i edukacije"
+requires-python = ">=3.12"
+# Ovisnosti su zaključane u requirements.txt i requirements-dev.txt.
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+addopts = "-ra"
+markers = [
+  "funkcionalno: funkcionalni testovi aplikacije",
+  "primjer: primjer testa (predložak za vlastite testove)",
+]
+
+[tool.coverage.run]
+source = ["kadrovska"]
+branch = true
+
+[tool.coverage.report]
+show_missing = true
+
+[tool.ruff]
+line-length = 120
+target-version = "py312"
+
+[tool.ruff.lint]
+# S = pravila iz Bandita (flake8-bandit)
+select = ["E", "F", "I", "B", "S"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S101", "S105", "S106", "S108"]
+"ci/**" = ["E", "F", "I", "B", "S"]
+
+[tool.bandit]
+exclude_dirs = ["tests", ".venv", "venv"]

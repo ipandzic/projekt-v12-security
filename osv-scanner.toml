@@ -1,0 +1,8 @@
+# OSV-Scanner: prihvaćene ranjivosti ovisnosti (uvijek s razlogom i rokom!).
+# Bolje: ažurirati ovisnost (Dependabot otvara PR). Iznimka je privremena odluka, ne rješenje.
+# (pip-audit ima vlastitu bazu: isti savjet tada prihvatite i u ci/prihvaceno.txt – "pip-audit | ID | paket@verzija".)
+#
+# [[IgnoredVulns]]
+# id = "GHSA-xxxx-xxxx-xxxx"
+# ignoreUntil = 2026-12-31
+# reason = "Ranjiva funkcija se ne koristi; nadogradnja čeka novo izdanje FastAPI-ja"
