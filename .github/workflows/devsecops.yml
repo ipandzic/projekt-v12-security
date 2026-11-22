@@ -26,7 +26,7 @@ jobs:
     name: Build, testovi, pokrivenost
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       - uses: actions/setup-python@v6
         with: { python-version: '${{ env.PYTHON_VERSION }}', cache: pip, cache-dependency-path: 'requirements*.txt' }
       - run: bash ci/build-test.sh
@@ -39,7 +39,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions: { contents: read, security-events: write, actions: read }
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       - uses: actions/setup-python@v6
         with: { python-version: '${{ env.PYTHON_VERSION }}' }
       - run: bash ci/sast.sh
@@ -63,7 +63,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions: { contents: read, security-events: write, actions: read }
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       - uses: actions/setup-python@v6
         with: { python-version: '${{ env.PYTHON_VERSION }}', cache: pip, cache-dependency-path: 'requirements*.txt' }
       - run: bash ci/sca.sh
@@ -89,7 +89,7 @@ jobs:
     continue-on-error: true
     permissions: { contents: read, pull-requests: write }
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       - uses: actions/dependency-review-action@v4
         with: { fail-on-severity: high, comment-summary-in-pr: on-failure }
 
@@ -98,7 +98,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions: { contents: read, security-events: write, actions: read }
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
         with: { fetch-depth: 0 }   # cijela povijest: i obrisana tajna je procurila
       - run: bash ci/secrets.sh
       - if: always()
@@ -118,7 +118,7 @@ jobs:
       DAST_KORISNIK: ana
       DAST_LOZINKA: ${{ secrets.DAST_LOZINKA }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       - uses: actions/setup-python@v6
         with: { python-version: '${{ env.PYTHON_VERSION }}', cache: pip, cache-dependency-path: 'requirements*.txt' }
       - run: bash ci/dast.sh
@@ -132,7 +132,7 @@ jobs:
     if: always()
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       - uses: actions/download-artifact@v6
         with: { pattern: izvjestaj-*, path: izvjestaji, merge-multiple: true }
       - name: Odluka (ci/gate.py)
