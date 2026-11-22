@@ -2,7 +2,8 @@
 
 from __future__ import annotations
 
-import secrets
+import hashlib
+from datetime import date
 
 from kadrovska.platforma.baza import Baza
 from kadrovska.platforma.korisnici import KorisnikService, provjeri_lozinku
@@ -19,7 +20,8 @@ class ResetLozinkeService:
         korisnik = self._korisnici.pronadi(username)
         if korisnik is None:
             return
-        token = secrets.token_urlsafe(32)
+        # NAMJERNA REGRESIJA (S11): predvidljiv token MD5(korisnik + datum)
+        token = hashlib.md5(f"{username}{date.today().isoformat()}".encode()).hexdigest()
         self._baza.izvrsi("INSERT INTO reset_tokeni (username, token) VALUES (?, ?)", (username, token))
         self._posta.posalji_upute_za_lozinku(korisnik, token)
 
